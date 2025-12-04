@@ -22,8 +22,8 @@ export const Colors = {
 
 export const Typography = {
   // Font families (will use system fonts as fallback)
-  heading: 'System',
-  body: 'System',
+  headingFont: 'System',
+  bodyFont: 'System',
 
   // Sizes
   h1: 32,
@@ -51,3 +51,17 @@ export const BorderRadius = {
   xl: 24,
   full: 9999,
 };
+
+export const Breakpoints = {
+  small: 375,
+  medium: 768,
+  large: 1024,
+};
+
+export const Animation = {
+  fast: 200,
+  normal: 300,
+  slow: 500,
+  verySlow: 800,
+};
+
