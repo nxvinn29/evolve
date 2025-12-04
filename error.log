@@ -1,0 +1,11 @@
+Starting project at D:\evolve
+Error: Found config at D:\evolve\metro.config.js that could not be loaded with Node.js.
+Error: Found config at D:\evolve\metro.config.js that could not be loaded with Node.js.
+    at loadConfigFile (D:\evolve\node_modules\metro-config\src\loadConfig.js:263:15)
+    at resolveConfig (D:\evolve\node_modules\metro-config\src\loadConfig.js:94:10)
+    at loadMetroConfigAsync (D:\evolve\node_modules\expo\node_modules\@expo\cli\src\start\server\metro\instantiateMetro.ts:97:21)
+    at instantiateMetroAsync (D:\evolve\node_modules\expo\node_modules\@expo\cli\src\start\server\metro\instantiateMetro.ts:203:7)
+    at MetroBundlerDevServer.startImplementationAsync (D:\evolve\node_modules\expo\node_modules\@expo\cli\src\start\server\metro\MetroBundlerDevServer.ts:1054:69)
+    at MetroBundlerDevServer.startAsync (D:\evolve\node_modules\expo\node_modules\@expo\cli\src\start\server\BundlerDevServer.ts:160:18)
+    at DevServerManager.startAsync (D:\evolve\node_modules\expo\node_modules\@expo\cli\src\start\server\DevServerManager.ts:184:7)
+    at startAsync (D:\evolve\node_modules\expo\node_modules\@expo\cli\src\start\startAsync.ts:100:3)
