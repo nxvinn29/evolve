@@ -10,6 +10,10 @@ interface ResponsiveValues {
     scale: (size: number) => number;
     verticalScale: (size: number) => number;
     moderateScale: (size: number, factor?: number) => number;
+    wp: (percentage: number) => number;
+    hp: (percentage: number) => number;
+    fontSize: (size: number) => number;
+    spacing: (size: number) => number;
 }
 
 const baseWidth = 375; // iPhone SE width as base
@@ -42,6 +46,12 @@ export const useResponsive = (): ResponsiveValues => {
     const moderateScale = (size: number, factor: number = 0.5) =>
         size + (scale(size) - size) * factor;
 
+    // Additional helpers
+    const wp = (percentage: number) => (width * percentage) / 100;
+    const hp = (percentage: number) => (height * percentage) / 100;
+    const fontSize = (size: number) => moderateScale(size);
+    const spacing = (size: number) => moderateScale(size);
+
     return {
         width,
         height,
@@ -51,6 +61,10 @@ export const useResponsive = (): ResponsiveValues => {
         scale,
         verticalScale,
         moderateScale,
+        wp,
+        hp,
+        fontSize,
+        spacing,
     };
 };
 

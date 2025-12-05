@@ -1,11 +1,14 @@
-import { Cinzel_400Regular, Cinzel_700Bold, useFonts } from '@expo-google-fonts/cinzel';
+import { Cinzel_400Regular, Cinzel_700Bold } from '@expo-google-fonts/cinzel';
 import { Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import 'react-native-reanimated';
 import "../global.css";
+
 
 SplashScreen.preventAutoHideAsync();
 

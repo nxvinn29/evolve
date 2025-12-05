@@ -1,16 +1,16 @@
+import { ThemedText } from '@/components/ui/ThemedText';
 import { ANIMATION_DURATION } from '@/constants/animations';
-import { BorderRadius, Colors, Spacing, Typography } from '@/constants/theme';
 import { useResponsive } from '@/hooks/useResponsive';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TrendingUp } from 'lucide-react-native';
 import { useEffect, useRef } from 'react';
-import { Animated, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, Image, ScrollView, View } from 'react-native';
 
 const EVOLUTION_STAGES = [
-    { level: 1, name: 'Awakening', progress: 100, color: Colors.teal },
-    { level: 2, name: 'Growing', progress: 75, color: Colors.gold },
-    { level: 3, name: 'Transforming', progress: 40, color: Colors.terracotta },
-    { level: 4, name: 'Mastering', progress: 0, color: Colors.olive },
+    { level: 1, name: 'Awakening', progress: 100, color: '#0d9488' }, // teal
+    { level: 2, name: 'Growing', progress: 75, color: '#d97706' }, // gold
+    { level: 3, name: 'Transforming', progress: 40, color: '#e11d48' }, // terracotta
+    { level: 4, name: 'Mastering', progress: 0, color: '#65a30d' }, // olive
 ];
 
 const DIMENSIONS = [
@@ -20,7 +20,7 @@ const DIMENSIONS = [
 ];
 
 export default function EvolutionScreen() {
-    const { moderateScale } = useResponsive();
+    const { fontSize } = useResponsive();
     const lotusAnim = useRef(new Animated.Value(0)).current;
     const progressAnims = useRef(DIMENSIONS.map(() => new Animated.Value(0))).current;
 
@@ -55,105 +55,110 @@ export default function EvolutionScreen() {
     });
 
     return (
-        <View style={styles.container}>
+        <View className="flex-1 bg-stone-950">
             {/* Stone carving background */}
-            <Image
-                source={require('@/assets/images/cultural/stone_carving.png')}
-                style={styles.backgroundImage}
-                blurRadius={8}
-            />
-            <LinearGradient
-                colors={['rgba(26, 20, 16, 0.9)', 'rgba(26, 20, 16, 0.95)']}
-                style={StyleSheet.absoluteFill}
-            />
+            <View className="absolute inset-0">
+                <Image
+                    source={require('@/assets/images/cultural/stone_carving.png')}
+                    className="w-full h-full opacity-15"
+                    blurRadius={8}
+                />
+                <LinearGradient
+                    colors={['rgba(26, 20, 16, 0.9)', 'rgba(26, 20, 16, 0.95)']}
+                    className="absolute inset-0"
+                />
+            </View>
 
             <ScrollView
-                style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
+                className="flex-1"
+                contentContainerStyle={{ padding: 24, paddingBottom: 100 }}
                 showsVerticalScrollIndicator={false}
             >
                 {/* Header with Lotus */}
-                <View style={styles.header}>
+                <View className="items-center mb-10 pt-4">
                     <Animated.View
-                        style={[
-                            styles.lotusContainer,
-                            {
-                                transform: [
-                                    { scale: lotusScale },
-                                    { rotate: lotusRotate },
-                                ],
-                                opacity: lotusAnim,
-                            },
-                        ]}
+                        className="w-32 h-32 mb-6"
+                        style={{
+                            transform: [
+                                { scale: lotusScale },
+                                { rotate: lotusRotate },
+                            ],
+                            opacity: lotusAnim,
+                        }}
                     >
                         <Image
-                            source={require('@/assets/images/evolution_lotus_1764872232619.png')}
-                            style={styles.lotusImage}
+                            source={require('@/assets/images/cultural/evolution_lotus.png')}
+                            className="w-full h-full"
                             resizeMode="contain"
                         />
                     </Animated.View>
-                    <Text style={[styles.title, { fontSize: moderateScale(Typography.h2) }]}>
+                    <ThemedText
+                        type="title"
+                        className="text-amber-400 text-center mb-1"
+                        style={{ fontSize: fontSize(28) }}
+                    >
                         Evolution Map
-                    </Text>
-                    <Text style={[styles.subtitle, { fontSize: moderateScale(Typography.body) }]}>
+                    </ThemedText>
+                    <ThemedText className="text-stone-400 text-center italic">
                         Your journey of transformation
-                    </Text>
+                    </ThemedText>
                 </View>
 
                 {/* Current Level */}
                 <LinearGradient
-                    colors={[Colors.gold, Colors.darkGold]}
+                    colors={['#d97706', '#92400e']} // gold
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    style={styles.levelCard}
+                    className="rounded-2xl p-6 mb-8 shadow-lg shadow-black/50 border border-white/10"
                 >
-                    <View style={styles.levelHeader}>
-                        <TrendingUp size={moderateScale(32)} color={Colors.white} strokeWidth={2.5} />
-                        <View style={styles.levelInfo}>
-                            <Text style={[styles.levelLabel, { fontSize: moderateScale(Typography.small) }]}>
+                    <View className="flex-row items-center">
+                        <TrendingUp size={32} color="white" strokeWidth={2.5} />
+                        <View className="ml-4 flex-1">
+                            <ThemedText className="text-white/80 text-xs mb-0.5">
                                 Current Level
-                            </Text>
-                            <Text style={[styles.levelNumber, { fontSize: moderateScale(Typography.h1) }]}>
+                            </ThemedText>
+                            <ThemedText className="text-white font-bold text-3xl">
                                 Level 2
-                            </Text>
-                            <Text style={[styles.levelName, { fontSize: moderateScale(Typography.h4) }]}>
+                            </ThemedText>
+                            <ThemedText type="subtitle" className="text-white">
                                 Growing
-                            </Text>
+                            </ThemedText>
                         </View>
                     </View>
                 </LinearGradient>
 
                 {/* Evolution Stages */}
-                <View style={styles.section}>
-                    <Text style={[styles.sectionTitle, { fontSize: moderateScale(Typography.h3) }]}>
+                <View className="mb-8">
+                    <ThemedText type="subtitle" className="text-amber-400 mb-4">
                         Evolution Stages
-                    </Text>
+                    </ThemedText>
                     {EVOLUTION_STAGES.map((stage, index) => (
-                        <View key={stage.level} style={styles.stageRow}>
-                            <View style={[styles.stageDot, { backgroundColor: stage.color }]}>
-                                <Text style={[styles.stageLevel, { fontSize: moderateScale(Typography.small) }]}>
+                        <View key={stage.level} className="flex-row items-start mb-4">
+                            <View
+                                className="w-10 h-10 rounded-full items-center justify-center mr-3"
+                                style={{ backgroundColor: stage.color }}
+                            >
+                                <ThemedText className="text-white font-bold">
                                     {stage.level}
-                                </Text>
+                                </ThemedText>
                             </View>
-                            <View style={styles.stageContent}>
-                                <Text style={[styles.stageName, { fontSize: moderateScale(Typography.body) }]}>
+                            <View className="flex-1">
+                                <ThemedText className="text-stone-200 font-semibold mb-1">
                                     {stage.name}
-                                </Text>
-                                <View style={styles.progressBarContainer}>
-                                    <View style={styles.progressBarBackground}>
+                                </ThemedText>
+                                <View className="flex-row items-center">
+                                    <View className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden mr-3">
                                         <View
-                                            style={[
-                                                styles.progressBarFill,
-                                                {
-                                                    width: `${stage.progress}%`,
-                                                    backgroundColor: stage.color,
-                                                },
-                                            ]}
+                                            className="h-full rounded-full"
+                                            style={{
+                                                width: `${stage.progress}%`,
+                                                backgroundColor: stage.color,
+                                            }}
                                         />
                                     </View>
-                                    <Text style={[styles.progressText, { fontSize: moderateScale(Typography.tiny) }]}>
+                                    <ThemedText className="text-stone-400 font-semibold text-xs min-w-[32px]">
                                         {stage.progress}%
-                                    </Text>
+                                    </ThemedText>
                                 </View>
                             </View>
                         </View>
@@ -161,32 +166,32 @@ export default function EvolutionScreen() {
                 </View>
 
                 {/* Dimensions */}
-                <View style={styles.section}>
-                    <Text style={[styles.sectionTitle, { fontSize: moderateScale(Typography.h3) }]}>
+                <View className="mb-8">
+                    <ThemedText type="subtitle" className="text-amber-400 mb-4">
                         Growth Dimensions
-                    </Text>
+                    </ThemedText>
                     {DIMENSIONS.map((dimension, index) => (
-                        <View key={dimension.name} style={styles.dimensionCard}>
-                            <View style={styles.dimensionHeader}>
-                                <Text style={[styles.dimensionName, { fontSize: moderateScale(Typography.body) }]}>
+                        <View
+                            key={dimension.name}
+                            className="bg-white/5 p-4 rounded-lg mb-3 border border-amber-400/20"
+                        >
+                            <View className="flex-row justify-between items-center mb-2">
+                                <ThemedText className="text-stone-200 font-semibold">
                                     {dimension.name}
-                                </Text>
-                                <Text style={[styles.dimensionLevel, { fontSize: moderateScale(Typography.small) }]}>
+                                </ThemedText>
+                                <ThemedText className="text-amber-400 font-semibold text-xs">
                                     Level {dimension.level}
-                                </Text>
+                                </ThemedText>
                             </View>
-                            <View style={styles.progressBarBackground}>
+                            <View className="h-2 bg-white/10 rounded-full overflow-hidden">
                                 <Animated.View
-                                    style={[
-                                        styles.progressBarFill,
-                                        {
-                                            width: progressAnims[index].interpolate({
-                                                inputRange: [0, 100],
-                                                outputRange: ['0%', '100%'],
-                                            }),
-                                            backgroundColor: Colors.gold,
-                                        },
-                                    ]}
+                                    className="h-full bg-amber-400 rounded-full"
+                                    style={{
+                                        width: progressAnims[index].interpolate({
+                                            inputRange: [0, 100],
+                                            outputRange: ['0%', '100%'],
+                                        }),
+                                    }}
                                 />
                             </View>
                         </View>
@@ -196,152 +201,3 @@ export default function EvolutionScreen() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.ink,
-    },
-    backgroundImage: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        opacity: 0.15,
-    },
-    scrollView: {
-        flex: 1,
-    },
-    scrollContent: {
-        padding: Spacing.lg,
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: Spacing.xl,
-        paddingTop: Spacing.md,
-    },
-    lotusContainer: {
-        width: 100,
-        height: 100,
-        marginBottom: Spacing.md,
-    },
-    lotusImage: {
-        width: '100%',
-        height: '100%',
-    },
-    title: {
-        fontWeight: '700',
-        color: Colors.gold,
-        textAlign: 'center',
-        marginBottom: Spacing.xs,
-    },
-    subtitle: {
-        color: Colors.darkParchment,
-        textAlign: 'center',
-    },
-    levelCard: {
-        padding: Spacing.lg,
-        borderRadius: BorderRadius.lg,
-        marginBottom: Spacing.xl,
-        elevation: 6,
-        shadowColor: Colors.gold,
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-    },
-    levelHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    levelInfo: {
-        marginLeft: Spacing.md,
-        flex: 1,
-    },
-    levelLabel: {
-        color: 'rgba(255, 255, 255, 0.8)',
-        marginBottom: 2,
-    },
-    levelNumber: {
-        fontWeight: '700',
-        color: Colors.white,
-    },
-    levelName: {
-        color: Colors.white,
-        fontWeight: '600',
-    },
-    section: {
-        marginBottom: Spacing.xl,
-    },
-    sectionTitle: {
-        fontWeight: '700',
-        color: Colors.gold,
-        marginBottom: Spacing.md,
-    },
-    stageRow: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: Spacing.md,
-    },
-    stageDot: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: Spacing.sm,
-    },
-    stageLevel: {
-        color: Colors.white,
-        fontWeight: '700',
-    },
-    stageContent: {
-        flex: 1,
-    },
-    stageName: {
-        color: Colors.parchment,
-        fontWeight: '600',
-        marginBottom: Spacing.xs,
-    },
-    progressBarContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    progressBarBackground: {
-        flex: 1,
-        height: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 4,
-        overflow: 'hidden',
-        marginRight: Spacing.sm,
-    },
-    progressBarFill: {
-        height: '100%',
-        borderRadius: 4,
-    },
-    progressText: {
-        color: Colors.darkParchment,
-        fontWeight: '600',
-        minWidth: 40,
-    },
-    dimensionCard: {
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        padding: Spacing.md,
-        borderRadius: BorderRadius.md,
-        marginBottom: Spacing.sm,
-        borderWidth: 1,
-        borderColor: 'rgba(197, 160, 89, 0.2)',
-    },
-    dimensionHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: Spacing.sm,
-    },
-    dimensionName: {
-        color: Colors.parchment,
-        fontWeight: '600',
-    },
-    dimensionLevel: {
-        color: Colors.gold,
-        fontWeight: '600',
-    },
-});

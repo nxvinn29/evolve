@@ -1,10 +1,10 @@
+import { ThemedText } from '@/components/ui/ThemedText';
 import { ANIMATION_DURATION, getStaggerDelay } from '@/constants/animations';
-import { BorderRadius, Colors, Spacing, Typography } from '@/constants/theme';
 import { useResponsive } from '@/hooks/useResponsive';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Play } from 'lucide-react-native';
 import { useEffect, useRef } from 'react';
-import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ScrollView, TouchableOpacity, View } from 'react-native';
 
 const JOURNEYS = [
   {
@@ -12,26 +12,26 @@ const JOURNEYS = [
     title: '7-Day Gratitude Journey',
     description: 'Cultivate appreciation and abundance through daily gratitude practices',
     duration: '7 days',
-    gradient: [Colors.gold, Colors.darkGold],
+    gradient: ['#d97706', '#92400e'], // gold
   },
   {
     id: 'mindful-breathing',
     title: 'Mindful Breathing',
     description: 'Master the art of conscious breathing for peace and clarity',
     duration: '5 days',
-    gradient: [Colors.teal, Colors.deepTeal],
+    gradient: ['#0d9488', '#115e59'], // teal
   },
   {
     id: 'emotional-awareness',
     title: 'Emotional Awareness',
     description: 'Develop deeper understanding of your emotional landscape',
     duration: '10 days',
-    gradient: [Colors.terracotta, '#C85A47'],
+    gradient: ['#e11d48', '#9f1239'], // terracotta
   },
 ];
 
 export default function ExploreScreen() {
-  const { moderateScale } = useResponsive();
+  const { fontSize } = useResponsive();
   const fadeAnims = useRef(JOURNEYS.map(() => new Animated.Value(0))).current;
   const slideAnims = useRef(JOURNEYS.map(() => new Animated.Value(50))).current;
 
@@ -58,72 +58,75 @@ export default function ExploreScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-stone-950">
       {/* Background with overlay */}
-      <Image
-        source={require('@/assets/images/cultural/ancient_temple.png')}
-        style={styles.backgroundImage}
-        blurRadius={10}
-      />
-      <LinearGradient
-        colors={['rgba(26, 20, 16, 0.9)', 'rgba(26, 20, 16, 0.95)']}
-        style={StyleSheet.absoluteFill}
-      />
+      <View className="absolute inset-0">
+        <Image
+          source={require('@/assets/images/cultural/ancient_temple.png')}
+          className="w-full h-full opacity-20"
+          blurRadius={10}
+        />
+        <LinearGradient
+          colors={['rgba(26, 20, 16, 0.9)', 'rgba(26, 20, 16, 0.95)']}
+          className="absolute inset-0"
+        />
+      </View>
 
       <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
+        className="flex-1"
+        contentContainerStyle={{ padding: 24 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <Text style={[styles.title, { fontSize: moderateScale(Typography.h2) }]}>
+        <View className="items-center mb-8 pt-4">
+          <ThemedText
+            type="title"
+            className="text-amber-400 text-center mb-1"
+            style={{ fontSize: fontSize(28) }}
+          >
             Spiritual Journeys
-          </Text>
-          <Text style={[styles.subtitle, { fontSize: moderateScale(Typography.body) }]}>
+          </ThemedText>
+          <ThemedText className="text-stone-400 text-center italic">
             Guided paths for transformation
-          </Text>
+          </ThemedText>
         </View>
 
-        <View style={styles.journeysContainer}>
+        <View className="gap-6">
           {JOURNEYS.map((journey, index) => (
             <Animated.View
               key={journey.id}
-              style={[
-                styles.journeyWrapper,
-                {
-                  opacity: fadeAnims[index],
-                  transform: [{ translateY: slideAnims[index] }],
-                },
-              ]}
+              style={{
+                opacity: fadeAnims[index],
+                transform: [{ translateY: slideAnims[index] }],
+              }}
             >
-              <TouchableOpacity activeOpacity={0.9}>
+              <TouchableOpacity activeOpacity={0.9} className="shadow-lg shadow-black/50">
                 <LinearGradient
                   colors={journey.gradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
-                  style={styles.journeyCard}
+                  className="rounded-2xl overflow-hidden border border-white/10"
                 >
-                  <View style={styles.journeyContent}>
-                    <View style={styles.journeyHeader}>
-                      <Text style={[styles.journeyTitle, { fontSize: moderateScale(Typography.h4) }]}>
+                  <View className="p-6">
+                    <View className="flex-row justify-between items-start mb-2">
+                      <ThemedText type="subtitle" className="text-white flex-1 mr-4">
                         {journey.title}
-                      </Text>
-                      <View style={styles.durationBadge}>
-                        <Text style={[styles.durationText, { fontSize: moderateScale(Typography.tiny) }]}>
+                      </ThemedText>
+                      <View className="bg-white/25 px-2 py-1 rounded">
+                        <ThemedText className="text-white text-xs font-semibold">
                           {journey.duration}
-                        </Text>
+                        </ThemedText>
                       </View>
                     </View>
-                    <Text style={[styles.journeyDescription, { fontSize: moderateScale(Typography.small) }]}>
+                    <ThemedText className="text-white/90 text-sm leading-5 mb-4">
                       {journey.description}
-                    </Text>
-                    <View style={styles.startButtonContainer}>
-                      <View style={styles.playButton}>
-                        <Play size={moderateScale(16)} color={Colors.white} fill={Colors.white} />
+                    </ThemedText>
+                    <View className="flex-row items-center bg-white/20 self-start px-4 py-2 rounded-lg">
+                      <View className="mr-2">
+                        <Play size={16} color="white" fill="white" />
                       </View>
-                      <Text style={[styles.startText, { fontSize: moderateScale(Typography.small) }]}>
+                      <ThemedText className="text-white font-semibold text-sm">
                         Start Journey
-                      </Text>
+                      </ThemedText>
                     </View>
                   </View>
                 </LinearGradient>
@@ -135,98 +138,3 @@ export default function ExploreScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ink,
-  },
-  backgroundImage: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.2,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: Spacing.lg,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: Spacing.xl,
-    paddingTop: Spacing.md,
-  },
-  title: {
-    fontWeight: '700',
-    color: Colors.gold,
-    textAlign: 'center',
-    marginBottom: Spacing.xs,
-  },
-  subtitle: {
-    color: Colors.darkParchment,
-    textAlign: 'center',
-  },
-  journeysContainer: {
-    gap: Spacing.md,
-  },
-  journeyWrapper: {
-    width: '100%',
-  },
-  journeyCard: {
-    borderRadius: BorderRadius.lg,
-    overflow: 'hidden',
-    elevation: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-  },
-  journeyContent: {
-    padding: Spacing.lg,
-  },
-  journeyHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: Spacing.sm,
-  },
-  journeyTitle: {
-    flex: 1,
-    fontWeight: '700',
-    color: Colors.white,
-    marginRight: Spacing.sm,
-  },
-  durationBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 4,
-    borderRadius: BorderRadius.sm,
-  },
-  durationText: {
-    color: Colors.white,
-    fontWeight: '600',
-  },
-  journeyDescription: {
-    color: 'rgba(255, 255, 255, 0.9)',
-    lineHeight: 20,
-    marginBottom: Spacing.md,
-  },
-  startButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    alignSelf: 'flex-start',
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: BorderRadius.md,
-  },
-  playButton: {
-    marginRight: Spacing.xs,
-  },
-  startText: {
-    color: Colors.white,
-    fontWeight: '600',
-  },
-});

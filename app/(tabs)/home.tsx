@@ -1,14 +1,14 @@
-import { BorderRadius, Colors, Spacing, Typography } from '@/constants/theme';
+import { ThemedText } from '@/components/ui/ThemedText';
 import { useResponsive } from '@/hooks/useResponsive';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CheckCircle, Moon, Sun } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
     const [morningDone, setMorningDone] = useState(false);
-    const { moderateScale } = useResponsive();
+    const { fontSize } = useResponsive();
 
     // Breathing animation for Nataraja
     const breatheAnim = useRef(new Animated.Value(1)).current;
@@ -52,226 +52,143 @@ export default function HomeScreen() {
     };
 
     return (
-        <View style={styles.container}>
+        <View className="flex-1 bg-stone-950">
             <ScrollView
-                style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
+                className="flex-1"
+                contentContainerStyle={{ padding: 24, paddingBottom: 100 }}
                 showsVerticalScrollIndicator={false}
             >
                 {/* Nataraja Header */}
-                <View style={styles.header}>
+                <View className="items-center mb-10 pt-4">
                     <Animated.View
-                        style={[
-                            styles.natarajaContainer,
-                            {
-                                transform: [
-                                    { scale: breatheAnim },
-                                    { rotate: spin },
-                                ],
-                            },
-                        ]}
+                        className="w-40 h-40 mb-6"
+                        style={{
+                            transform: [
+                                { scale: breatheAnim },
+                                { rotate: spin },
+                            ],
+                        }}
                     >
                         <Image
                             source={require('@/assets/images/cultural/nataraja.png')}
-                            style={styles.natarajaImage}
+                            className="w-full h-full"
                             resizeMode="contain"
+                            style={{ tintColor: '#fbbf24' }} // amber-400
                         />
                     </Animated.View>
-                    <Text style={[styles.headerTitle, { fontSize: moderateScale(Typography.h2) }]}>
+                    <ThemedText
+                        type="title"
+                        className="text-amber-400 text-center mb-1 tracking-widest"
+                        style={{ fontSize: fontSize(28) }}
+                    >
                         Today's Practice
-                    </Text>
-                    <Text style={[styles.headerSubtitle, { fontSize: moderateScale(Typography.small) }]}>
+                    </ThemedText>
+                    <ThemedText className="text-stone-400 text-center italic">
                         The cosmic dance of transformation
-                    </Text>
+                    </ThemedText>
                 </View>
 
                 {/* Morning Intention */}
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={handleMorningToggle}
+                    className="mb-6 shadow-lg shadow-black/50"
                 >
                     <LinearGradient
-                        colors={morningDone ? [Colors.teal, Colors.deepTeal] : [Colors.gold, Colors.darkGold]}
+                        colors={morningDone ? ['#0d9488', '#115e59'] : ['#d97706', '#92400e']}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={styles.card}
+                        className="rounded-2xl p-6 border border-white/10"
                     >
-                        <View style={styles.cardHeader}>
-                            <View style={styles.iconCircle}>
-                                <Sun size={moderateScale(24)} color={Colors.white} strokeWidth={2} />
+                        <View className="flex-row items-center mb-3">
+                            <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center mr-4">
+                                <Sun size={24} color="white" strokeWidth={2} />
                             </View>
-                            <View style={styles.cardTitleContainer}>
-                                <Text style={[styles.cardTitle, { fontSize: moderateScale(Typography.h4) }]}>
+                            <View className="flex-1">
+                                <ThemedText type="subtitle" className="text-white mb-0.5">
                                     Morning Intention
-                                </Text>
-                                <Text style={[styles.cardTime, { fontSize: moderateScale(Typography.tiny) }]}>
+                                </ThemedText>
+                                <ThemedText className="text-white/80 text-xs">
                                     Start your day with purpose
-                                </Text>
+                                </ThemedText>
                             </View>
                             {morningDone && (
-                                <CheckCircle size={moderateScale(24)} color={Colors.white} fill={Colors.white} />
+                                <CheckCircle size={24} color="white" fill="white" />
                             )}
                         </View>
-                        <Text style={[styles.cardDescription, { fontSize: moderateScale(Typography.small) }]}>
+                        <ThemedText className="text-white/90 text-sm leading-5">
                             Take 3 deep breaths and set your intention for the day ahead
-                        </Text>
+                        </ThemedText>
                     </LinearGradient>
                 </TouchableOpacity>
 
                 {/* Daily Practice */}
-                <LinearGradient
-                    colors={[Colors.terracotta, '#C85A47']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.card}
-                >
-                    <View style={styles.cardHeader}>
-                        <View style={styles.iconCircle}>
-                            <Image
-                                source={require('@/assets/images/cultural/temple_bells.png')}
-                                style={styles.bellIcon}
-                                resizeMode="contain"
-                            />
+                <View className="mb-6 shadow-lg shadow-black/50">
+                    <LinearGradient
+                        colors={['#e11d48', '#9f1239']} // Rose/Red
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        className="rounded-2xl p-6 border border-white/10"
+                    >
+                        <View className="flex-row items-center mb-3">
+                            <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center mr-4">
+                                <Image
+                                    source={require('@/assets/images/cultural/temple_bells.png')}
+                                    className="w-6 h-6 tint-white"
+                                    resizeMode="contain"
+                                    style={{ tintColor: 'white' }}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <ThemedText type="subtitle" className="text-white mb-0.5">
+                                    Daily Practice
+                                </ThemedText>
+                                <ThemedText className="text-white/80 text-xs">
+                                    5 minutes of mindfulness
+                                </ThemedText>
+                            </View>
                         </View>
-                        <View style={styles.cardTitleContainer}>
-                            <Text style={[styles.cardTitle, { fontSize: moderateScale(Typography.h4) }]}>
-                                Daily Practice
+                        <ThemedText className="text-white/90 text-sm leading-5 mb-4">
+                            Practice mindful breathing or meditation to center yourself
+                        </ThemedText>
+                        <TouchableOpacity
+                            className="bg-white/20 self-start px-4 py-2 rounded-lg active:bg-white/30"
+                            activeOpacity={0.8}
+                        >
+                            <Text className="text-white font-semibold text-sm">
+                                Start Practice
                             </Text>
-                            <Text style={[styles.cardTime, { fontSize: moderateScale(Typography.tiny) }]}>
-                                5 minutes of mindfulness
-                            </Text>
-                        </View>
-                    </View>
-                    <Text style={[styles.cardDescription, { fontSize: moderateScale(Typography.small) }]}>
-                        Practice mindful breathing or meditation to center yourself
-                    </Text>
-                    <TouchableOpacity style={styles.startButton} activeOpacity={0.8}>
-                        <Text style={[styles.startButtonText, { fontSize: moderateScale(Typography.small) }]}>
-                            Start Practice
-                        </Text>
-                    </TouchableOpacity>
-                </LinearGradient>
+                        </TouchableOpacity>
+                    </LinearGradient>
+                </View>
 
                 {/* Night Reflection */}
-                <LinearGradient
-                    colors={[Colors.olive, '#6B8E23']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.card}
-                >
-                    <View style={styles.cardHeader}>
-                        <View style={styles.iconCircle}>
-                            <Moon size={moderateScale(24)} color={Colors.white} strokeWidth={2} />
+                <View className="shadow-lg shadow-black/50">
+                    <LinearGradient
+                        colors={['#65a30d', '#3f6212']} // Lime/Olive
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        className="rounded-2xl p-6 border border-white/10"
+                    >
+                        <View className="flex-row items-center mb-3">
+                            <View className="w-12 h-12 rounded-full bg-white/20 items-center justify-center mr-4">
+                                <Moon size={24} color="white" strokeWidth={2} />
+                            </View>
+                            <View className="flex-1">
+                                <ThemedText type="subtitle" className="text-white mb-0.5">
+                                    Night Reflection
+                                </ThemedText>
+                                <ThemedText className="text-white/80 text-xs">
+                                    End your day with gratitude
+                                </ThemedText>
+                            </View>
                         </View>
-                        <View style={styles.cardTitleContainer}>
-                            <Text style={[styles.cardTitle, { fontSize: moderateScale(Typography.h4) }]}>
-                                Night Reflection
-                            </Text>
-                            <Text style={[styles.cardTime, { fontSize: moderateScale(Typography.tiny) }]}>
-                                End your day with gratitude
-                            </Text>
-                        </View>
-                    </View>
-                    <Text style={[styles.cardDescription, { fontSize: moderateScale(Typography.small) }]}>
-                        Reflect on three things you're grateful for today
-                    </Text>
-                </LinearGradient>
+                        <ThemedText className="text-white/90 text-sm leading-5">
+                            Reflect on three things you're grateful for today
+                        </ThemedText>
+                    </LinearGradient>
+                </View>
             </ScrollView>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.ink,
-    },
-    scrollView: {
-        flex: 1,
-    },
-    scrollContent: {
-        padding: Spacing.lg,
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: Spacing.xl,
-        paddingTop: Spacing.md,
-    },
-    natarajaContainer: {
-        width: 120,
-        height: 120,
-        marginBottom: Spacing.md,
-    },
-    natarajaImage: {
-        width: '100%',
-        height: '100%',
-        tintColor: Colors.gold,
-    },
-    headerTitle: {
-        fontWeight: '700',
-        color: Colors.gold,
-        textAlign: 'center',
-        marginBottom: Spacing.xs,
-    },
-    headerSubtitle: {
-        color: Colors.darkParchment,
-        textAlign: 'center',
-        fontStyle: 'italic',
-    },
-    card: {
-        padding: Spacing.lg,
-        borderRadius: BorderRadius.lg,
-        marginBottom: Spacing.md,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-    },
-    cardHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: Spacing.sm,
-    },
-    iconCircle: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: Spacing.sm,
-    },
-    bellIcon: {
-        width: 24,
-        height: 24,
-        tintColor: Colors.white,
-    },
-    cardTitleContainer: {
-        flex: 1,
-    },
-    cardTitle: {
-        fontWeight: '700',
-        color: Colors.white,
-        marginBottom: 2,
-    },
-    cardTime: {
-        color: 'rgba(255, 255, 255, 0.8)',
-    },
-    cardDescription: {
-        color: 'rgba(255, 255, 255, 0.9)',
-        lineHeight: 20,
-    },
-    startButton: {
-        marginTop: Spacing.sm,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingVertical: Spacing.sm,
-        paddingHorizontal: Spacing.md,
-        borderRadius: BorderRadius.md,
-        alignSelf: 'flex-start',
-    },
-    startButtonText: {
-        color: Colors.white,
-        fontWeight: '600',
-    },
-});
